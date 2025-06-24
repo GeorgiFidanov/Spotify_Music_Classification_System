@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .debug-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .loading {
+            text-align: center;
+            margin: 40px 0;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1DB954;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Exchanging authorization code...</p>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+
+        // Debug information
+        const debugInfo = {
+            url: window.location.href,
+            code: code ? 'Present' : 'Missing',
+            error: error || 'None',
+            errorDescription: errorDescription || 'None',
+            searchParams: window.location.search
+        };
+
+        async function exchangeToken(code) {
+            try {
+                const response = await fetch('/api/spotify/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code: code })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(errorData?.detail || `HTTP error! status: ${response.status}`);
+                }
+
+                const tokenData = await response.json();
+                
+                // Store the tokens
+                localStorage.setItem('spotify_access_token', tokenData.access_token);
+                localStorage.setItem('spotify_refresh_token', tokenData.refresh_token);
+                localStorage.setItem('spotify_token_expires', Date.now() + (tokenData.expires_in * 1000));
+
+                // Redirect to main page
+                window.location.href = '/';
+            } catch (error) {
+                showError('Token Exchange Error', error.message);
+            }
+        }
+
+        function showError(title, message) {
+            document.getElementById('loading').style.display = 'none';
+            document.body.innerHTML = `
+                <h1>${title}</h1>
+                <div class="error">
+                    <h3>Error Details:</h3>
+                    <p>${message}</p>
+                </div>
+                <div class="debug-info">
+                    <h3>Debug Information:</h3>
+                    <pre>${JSON.stringify(debugInfo, null, 2)}</pre>
+                </div>
+                <p><a href="/">Return to Home</a></p>
+            `;
+        }
+
+        if (code) {
+            // Exchange the code for tokens
+            exchangeToken(code);
+        } else if (error) {
+            showError('Authentication Error', errorDescription || 'Unknown error occurred');
+        } else {
+            showError('Authentication Error', 'No authorization code received');
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,221 @@
+/* General styles */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Visualization container */
+#visualization {
+    min-height: 600px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Node styles */
+.node {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.node:hover {
+    opacity: 0.8;
+}
+
+.node circle {
+    stroke: #fff;
+    stroke-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.node:hover circle {
+    stroke-width: 3px;
+    filter: brightness(1.1);
+}
+
+.node text {
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    transition: all 0.3s ease;
+}
+
+.node:hover text {
+    font-weight: bold;
+}
+
+/* Link styles */
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+    transition: all 0.3s ease;
+}
+
+.node:hover ~ .link {
+    stroke: #1DB954;
+    stroke-width: 2px;
+}
+
+/* Cluster info styles */
+#cluster-info {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.cluster-card {
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.cluster-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.cluster-card h6 {
+    color: #1DB954;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.cluster-card p {
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.track-list {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.track-list h6 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.track-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.track-list li {
+    padding: 0.25rem 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Loading spinner */
+#loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tooltip styles */
+.tooltip {
+    position: absolute;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+/* Button styles */
+.btn {
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-success {
+    background-color: #1DB954;
+    border-color: #1DB954;
+}
+
+.btn-success:hover {
+    background-color: #1ed760;
+    border-color: #1ed760;
+}
+
+.btn-primary {
+    background-color: #1DB954;
+    border-color: #1DB954;
+}
+
+.btn-primary:hover {
+    background-color: #1ed760;
+    border-color: #1ed760;
+}
+
+.btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Card styles */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    padding: 1rem;
+}
+
+.card-title {
+    color: #333;
+    font-weight: 600;
+    margin: 0;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #visualization {
+        min-height: 400px;
+    }
+    
+    .col-md-4 {
+        margin-top: 1rem;
+    }
+    
+    .cluster-card {
+        padding: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+} 

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Music Classification</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', path='/images/favicon.svg') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Spotify Music Classification</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Login Card -->
+        <div id="login-card" class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+            <div class="card shadow-lg p-4 text-center" style="max-width: 400px; width: 100%; border-radius: 16px;">
+                <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" alt="Spotify Logo" style="width: 120px; margin-bottom: 1rem;">
+                <h2 class="mb-3" style="color: #1DB954; font-weight: 700;">Welcome</h2>
+                <p class="mb-4" style="color: #444;">Sign in with your Spotify account to explore your music, visualize clusters, and create smart playlists.</p>
+                <button id="login-button" class="btn btn-success btn-lg w-100" style="font-size: 1.2rem;">
+                    <i class="bi bi-spotify" style="margin-right: 8px;"></i>Login with Spotify
+                </button>
+            </div>
+        </div>
+
+        <div id="loading" class="text-center d-none">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div id="main-content" class="d-none">
+            <div class="row">
+                <div class="col-md-8">
+                    <div id="visualization" class="border rounded p-3">
+                        <!-- D3.js visualization will be rendered here -->
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Cluster Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="cluster-info">
+                                <!-- Cluster information will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <button id="create-playlist" class="btn btn-primary w-100 mb-2" disabled>
+                                Create Playlist from Selected
+                            </button>
+                            <button id="surprise-me" class="btn btn-secondary w-100">
+                                Surprise Me
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.js"></script>
+    <script src="{{ url_for('static', path='/js/main.js') }}"></script>
+    <script>
+        // Hide login card and show main content after login
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('spotify_access_token');
+            if (token) {
+                document.getElementById('login-card').style.display = 'none';
+                document.getElementById('main-content').classList.remove('d-none');
+            } else {
+                document.getElementById('login-card').style.display = 'flex';
+                document.getElementById('main-content').classList.add('d-none');
+            }
+        });
+    </script>
+</body>
+</html> 
